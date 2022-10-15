@@ -8,6 +8,7 @@ import numpy as np
 from typing import Optional
 from Bot import Bot
 from GameState import GameState
+from MinimaxBot import MinimaxBot
 
 # * Import your bot
 from RandomBot import RandomBot
@@ -273,6 +274,14 @@ class Dots_and_Boxes():
             self.reset_board = False
 
     def update(self, valid_input, logical_position):
+        # INI SEMENTARA DARI SINI
+        # INI OBJECTIVE FUNCTION DARI SISI SI PLAYER 1
+        if self.player1_turn:
+            turnOf = -1
+        else:
+            turnOf = 1
+        # SAMPAI SINI
+
         if valid_input and not self.is_grid_occupied(logical_position, valid_input):
             self.window.unbind(LEFT_CLICK)
             self.update_board(valid_input, logical_position)
@@ -281,6 +290,38 @@ class Dots_and_Boxes():
             self.refresh_board()
             self.player1_turn = (not self.player1_turn) if not self.pointsScored else self.player1_turn
             self.pointsScored = False
+
+            # INI SEMENTARA DARI SINI
+
+            x = GameState(
+            self.board_status.copy(),
+            self.row_status.copy(),
+            self.col_status.copy(),
+            self.player1_turn
+            )
+            objectiveFuncScore = 0
+            for i in range(3):
+                for j in range(3):
+                    rowVal = int((x.board_status[i][j]))*(-1)
+                    # print(rowVal, end=" ")
+                    if abs(rowVal) == 1:
+                        objectiveFuncScore += 5
+                        print(5, end=" ")
+                    elif  abs(rowVal) == 2:
+                        objectiveFuncScore += 10
+                        print(10, end=" ")
+                    elif abs(rowVal) == 3:
+                        objectiveFuncScore += 25*turnOf
+                        print(25*turnOf, end=" ")
+                    elif abs(rowVal) == 4:
+                        objectiveFuncScore += 25*rowVal
+                        print(25*rowVal, end=" ")
+                    else:
+                        print(0, end=" ")
+                print()
+            print("Total skor:", objectiveFuncScore)
+            print()
+            # SAMPAI SINI
 
             if self.is_gameover():
                 # self.canvas.delete("all")
@@ -314,5 +355,5 @@ if __name__ == "__main__":
     PvB mode: game_instance = Dots_and_Boxes(None, BotName()) or game_instance = Dots_and_Boxes(BotName(), None)
     BvB mode: game_instance = Dots_and_Boxes(BotName(), BotName())
     """
-    game_instance = Dots_and_Boxes(None, RandomBot())
+    game_instance = Dots_and_Boxes(None, MinimaxBot())
     game_instance.mainloop()
