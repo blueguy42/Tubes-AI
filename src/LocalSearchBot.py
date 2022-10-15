@@ -47,14 +47,14 @@ class LocalSearchBot(Bot):
         for i in range(self.rowLen):
             for j in range(self.colLen):
                 rowVal = int(state.board_status[i][j])*self.player2Bool
-                
-                if abs(rowVal) == 1:
+                absRowVal = abs(rowVal)
+                if absRowVal == 1:
                     objectiveFuncScore += 5
-                elif  abs(rowVal) == 2:
+                elif  absRowVal == 2:
                     objectiveFuncScore += 10
-                elif abs(rowVal) == 3:
+                elif absRowVal == 3:
                     objectiveFuncScore -= 25*turnofBot
-                elif abs(rowVal) == 4:
+                elif absRowVal == 4:
                     objectiveFuncScore += 25*rowVal
 
         return objectiveFuncScore
