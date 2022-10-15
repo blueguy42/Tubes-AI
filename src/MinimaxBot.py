@@ -4,6 +4,8 @@ from GameState import GameState
 import numpy as np
 
 class MinimaxBot(Bot):
+    def __init__(self, num_of_dots: int):
+        self.NUMBER_OF_DOTS = num_of_dots
     # minimax with alpha beta pruning
     # player1 as min, player2 (AI) as max
     def get_action(self, state: GameState) -> GameAction:
@@ -68,7 +70,6 @@ class MinimaxBot(Bot):
         new_col_status = state.col_status.copy()
         new_player1_turn = not state.player1_turn
 
-        [ny, nx] = state.board_status.shape
         action_type = action.action_type
         logical_position = action.position
         x = logical_position[0]
@@ -79,9 +80,9 @@ class MinimaxBot(Bot):
             playerModifier = -1
             
 
-        if y < (ny-1) and x < (nx-1):
+        if y < (self.NUMBER_OF_DOTS -1) and x < (self.NUMBER_OF_DOTS-1):
             new_board_status[y][x] = (abs(new_board_status[y][x]) + val) * playerModifier
-            if abs(new_board_status[y][x]) == 4:
+            if abs(new_board_status[y-1][x]) == 4:
                 new_player1_turn = not state.player1_turn
 
         if action_type == 'row':

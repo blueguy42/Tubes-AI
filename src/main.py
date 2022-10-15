@@ -11,6 +11,8 @@ from GameState import GameState
 
 # * Import your bot
 from RandomBot import RandomBot
+from MinimaxBot import MinimaxBot
+from LocalSearchBot import LocalSearchBot
 
 size_of_board = 600
 number_of_dots = 4
@@ -314,5 +316,18 @@ if __name__ == "__main__":
     PvB mode: game_instance = Dots_and_Boxes(None, BotName()) or game_instance = Dots_and_Boxes(BotName(), None)
     BvB mode: game_instance = Dots_and_Boxes(BotName(), BotName())
     """
-    game_instance = Dots_and_Boxes(None, RandomBot())
+    print("""
+    Welcome to Dots and Boxes!
+    Choose mode:
+    1. PvE(LocalSearchBot)
+    2. PvE(MinimaxBot)
+    3. EvE(LocalSearchBot vs MinimaxBot)
+    """)
+    mode = int(input("Enter mode: "))
+    if mode == 1:
+        game_instance = Dots_and_Boxes(None, LocalSearchBot(number_of_dots))
+    elif mode == 2:
+        game_instance = Dots_and_Boxes(None, MinimaxBot(number_of_dots))
+    elif mode == 3:
+        game_instance = Dots_and_Boxes(LocalSearchBot(number_of_dots), MinimaxBot(number_of_dots))
     game_instance.mainloop()
