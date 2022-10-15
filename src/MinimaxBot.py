@@ -65,28 +65,6 @@ class MinimaxBot(Bot):
 
         return objectiveFuncScore
     
-    # def get_utility(self, state: GameState) -> int:
-    #     value = 0
-    #     for y in range(state.board_status.shape[0]):
-    #         for x in range(state.board_status.shape[1]):
-    #             if state.board_status[y][x] == 4:
-    #                 value += 1000
-    #             elif state.board_status[y][x] == -4:
-    #                 value -= 1000
-    #             elif state.board_status[y][x] == 3:
-    #                 value -= 100
-    #             elif state.board_status[y][x] == -3:
-    #                 value += 100
-    #             elif state.board_status[y][x] == 2:
-    #                 value += 10
-    #             elif state.board_status[y][x] == -2:
-    #                 value -= 10
-    #             elif state.board_status[y][x] == 1:
-    #                 value -= 1
-    #             elif state.board_status[y][x] == -1:
-    #                 value += 1
-    #     return value
-    
     def get_actions(self, state: GameState) -> list:
         [ny, nx] = state.row_status.shape
         actions = []
