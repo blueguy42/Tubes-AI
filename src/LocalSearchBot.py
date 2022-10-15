@@ -1,3 +1,4 @@
+import random
 from typing import Tuple
 from Bot import Bot
 from GameAction import GameAction
@@ -6,11 +7,6 @@ import numpy as np
 
 
 class LocalSearchBot(Bot):
-    # Bakal perlu method yg bangkitin semua neighbor
-    # Bakal milih neighbor dengan nilai maks atau sama
-    # Kalo udah maks iterasi (pas gerak sideway) atau ngga ada neighbor dengan nilai sama atau lebih, maka return current
-    MAX_SIDEWAYS = 20
-
     def __init__(self, num_of_dots: int):
         self.NUMBER_OF_DOTS = num_of_dots
         self.rowLen = num_of_dots - 1
@@ -32,13 +28,6 @@ class LocalSearchBot(Bot):
         possibleActions = self.get_all_possible_actions(current)
         _, action = self.getNeighbor(current, possibleActions)
         return action
-    
-
-    
-    def is_terminal(self, state: GameState) -> bool:
-        return np.all(state.row_status == 1) and np.all(state.col_status == 1)
-
-
     
     def get_utility(self, state: GameState) -> int:
         turnofBot = 1
@@ -83,6 +72,12 @@ class LocalSearchBot(Bot):
         chosen_action = None
         val = 1
         playerModifier = 1
+        # Cek dia player 1 atau bukan
+        if self.player2Bool == -1 and np.sum(state.board_status) == 0:
+            randomAction = possibleActions[random.randint(0, len(possibleActions)-1)]
+            while randomAction.position[0] == 0 or randomAction.position[1] == 0:
+                randomAction = possibleActions[random.randint(0, len(possibleActions)-1)]
+            return state, randomAction
         # loop actions
         for action in possibleActions:
             new_board_status = state.board_status.copy()
