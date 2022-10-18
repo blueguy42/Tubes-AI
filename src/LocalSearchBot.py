@@ -30,8 +30,6 @@ class LocalSearchBot(Bot):
         return action
     
     def get_utility(self, state: GameState) -> int:
-        turnofBot = 1
-        
         objectiveFuncScore = 0
         for i in range(self.rowLen):
             for j in range(self.colLen):
@@ -42,7 +40,7 @@ class LocalSearchBot(Bot):
                 elif  absRowVal == 2:
                     objectiveFuncScore += 10
                 elif absRowVal == 3:
-                    objectiveFuncScore -= 25*turnofBot
+                    objectiveFuncScore -= 25
                 elif absRowVal == 4:
                     objectiveFuncScore += 25*rowVal
 
