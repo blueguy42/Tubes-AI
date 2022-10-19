@@ -2,7 +2,6 @@ from Bot import Bot
 from GameAction import GameAction
 from GameState import GameState
 import numpy as np
-import time
 
 class MinimaxBot(Bot):
     def __init__(self, num_of_dots: int):
@@ -16,12 +15,10 @@ class MinimaxBot(Bot):
         self.player2Bool = 1
 
     # minimax with alpha beta pruning
-    # player1 as min, player2 (AI) as max
+    # opponent as min, bot (AI) as max
     def get_action(self, state: GameState) -> GameAction:
-
         # Check if bot is player 1 or 2, and set row and column of board.
         # Only checked on first turn.
-        a = time.perf_counter()
         if not self.turnStep:
             if not int(np.sum(state.board_status)):
                 self.player2Bool = -1
@@ -34,8 +31,6 @@ class MinimaxBot(Bot):
             if value > best_value:
                 best_value = value
                 best_action = action
-        print(best_action)
-        print(time.perf_counter()-a, "seconds")
         return best_action
 
     def is_terminal(self, state: GameState) -> bool:
