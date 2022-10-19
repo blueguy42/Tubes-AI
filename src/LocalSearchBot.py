@@ -11,18 +11,11 @@ class LocalSearchBot(Bot):
         self.NUMBER_OF_DOTS = num_of_dots
         self.rowLen = num_of_dots - 1
         self.colLen = num_of_dots - 1
-        self.turnStep = 0
-        # Is bot player 2 (1) or player 1 (-1)
-        self.player2Bool = 1
 
     # Ini hillclimbingnya
     def get_action(self, state: GameState) -> GameAction:
         # Check if bot is player 1 or 2, and set row and column of board.
         # Only checked on first turn.
-        if not self.turnStep:
-            if not int(np.sum(state.board_status)):
-                self.player2Bool = -1
-            self.turnStep += 1
 
         current = state
         possibleActions = self.get_all_possible_actions(current)
@@ -33,7 +26,7 @@ class LocalSearchBot(Bot):
         objectiveFuncScore = 0
         for i in range(self.rowLen):
             for j in range(self.colLen):
-                rowVal = int(state.board_status[i][j])*self.player2Bool
+                rowVal = int(state.board_status[i][j])
                 absRowVal = abs(rowVal)
                 if absRowVal == 1:
                     objectiveFuncScore += 5
@@ -42,8 +35,7 @@ class LocalSearchBot(Bot):
                 elif absRowVal == 3:
                     objectiveFuncScore -= 25
                 elif absRowVal == 4:
-                    objectiveFuncScore += 25*rowVal
-
+                    objectiveFuncScore += int(25*rowVal)
         return objectiveFuncScore
 
     # Fungsi ini mengembalikan list GameState semua kemungkinan gerakan di level saat ini
@@ -70,8 +62,9 @@ class LocalSearchBot(Bot):
         chosen_action = None
         val = 1
         playerModifier = 1
-        # Cek dia player 1 atau bukan
-        if self.player2Bool == -1 and np.sum(state.board_status) == 0:
+        
+        # Cek apakah turn pertama atau tidak
+        if np.sum(state.board_status) == 0:
             randomAction = possibleActions[random.randint(0, len(possibleActions)-1)]
             while randomAction.position[0] == 0 or randomAction.position[1] == 0:
                 randomAction = possibleActions[random.randint(0, len(possibleActions)-1)]
@@ -83,8 +76,6 @@ class LocalSearchBot(Bot):
             new_col_status = state.col_status.copy()
             new_x = action.position[0]
             new_y = action.position[1]
-
-            
 
             # Cek apakah jadi kotak 
             if new_y < (self.NUMBER_OF_DOTS-1) and new_x < (self.NUMBER_OF_DOTS-1):
@@ -99,9 +90,7 @@ class LocalSearchBot(Bot):
                 new_col_status[new_y][new_x] = 1
                 if new_x >= 1:
                     new_board_status[new_y][new_x-1] = (abs(new_board_status[new_y][new_x-1]) + val) * playerModifier
-            
-            
-            
+
             # hitung nilai utilitas
             this_value = self.get_utility(GameState(new_board_status, new_row_status, new_col_status, not state.player1_turn))
             if this_value >= value_max:

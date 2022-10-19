@@ -326,7 +326,7 @@ if __name__ == "__main__":
     """)
     mode = int(input("Enter mode: "))
     if mode == 1:
-        game_instance = Dots_and_Boxes(LocalSearchBot(number_of_dots), None)
+        game_instance = Dots_and_Boxes(None, LocalSearchBot(number_of_dots))
     elif mode == 2:
         game_instance = Dots_and_Boxes(None, MinimaxBot(number_of_dots))
     elif mode == 3:
