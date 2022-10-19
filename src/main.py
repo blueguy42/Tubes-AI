@@ -328,7 +328,7 @@ if __name__ == "__main__":
     if mode == 1:
         game_instance = Dots_and_Boxes(None, LocalSearchBot(number_of_dots))
     elif mode == 2:
-        game_instance = Dots_and_Boxes(None, MinimaxBot(number_of_dots))
+        game_instance = Dots_and_Boxes(MinimaxBot(number_of_dots), None)
     elif mode == 3:
         game_instance = Dots_and_Boxes(LocalSearchBot(number_of_dots), MinimaxBot(number_of_dots))
     game_instance.mainloop()
